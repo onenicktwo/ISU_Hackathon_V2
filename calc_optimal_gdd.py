@@ -11,7 +11,8 @@ def get_optimal_gdd(input_file, base_temp):
     high_temp = df['High Temperature']
     low_temp = df['Low Temperature']
 
-    gdd = gdd_calculator.get_gdd(high_temp, low_temp, base_temp)
+    # gets the optimal gdd from the file
+    gdd = [gdd_calculator.get_gdd(high, low, base_temp) for high, low in zip(high_temp, low_temp)]
     return gdd
 
 

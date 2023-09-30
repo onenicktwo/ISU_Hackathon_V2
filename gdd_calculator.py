@@ -1,8 +1,9 @@
 # Just an outline of a GDD Calculator
 
 def get_gdd(high, low, base):
-    # calculate mean temperature
-    mean_temp = float((high + low) / 2)
+
+    # calculate mean temp
+    mean_temp = float(((min(high, 86.00) + min(low, 50.00)) / 2))
 
     # calculates the gdd
     gdd_value = max(mean_temp - base, 0)
