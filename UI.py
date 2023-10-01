@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import main  # Import your main script as a module
 
 # Create a custom font
@@ -16,13 +17,21 @@ def generate_graph():
         years = main.year
         gdd_values = main.gdd_values
 
-        plt.figure(figsize=(8, 4))
-        plt.plot(years, gdd_values)
-        plt.xlabel("Year")
-        plt.ylabel("Growing Degree Days")
-        plt.title(f"Growing Degree Days for {selected_crop}")
-        plt.grid(True)
-        plt.show()
+        # Create a new figure
+        fig = plt.figure(figsize=(8, 4))
+        ax = fig.add_subplot(111)
+        ax.plot(years, gdd_values)
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Growing Degree Days")
+        ax.set_title(f"Growing Degree Days for {selected_crop}")
+        ax.grid(True)
+
+        # Embed the Matplotlib figure in the Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=graph_frame)
+        canvas.get_tk_widget().pack()
+
+        # Update the canvas
+        canvas.draw()
 
 # Function to update plant and harvest date labels
 def update_dates():
@@ -43,14 +52,6 @@ bg_label.place(relwidth=1, relheight=1)
 
 # Create a list of available crops
 crops = ["Corn", "Wheat", "Rice", "Soybeans"]
-
-# Dictionary to map crops to their data (replace with your actual data)
-crop_data = {
-    "Corn": {"y": [10, 15, 7, 12, 9, 0]},
-    "Wheat": {"y": [8, 11, 6, 9, 7, 0]},
-    "Rice": {"y": [12, 17, 10, 14, 11, 0]},
-    "Soybeans": {"y": [9, 14, 8, 11, 10, 0]},
-}
 
 # Create and configure the crop selection combobox
 crop_label = ttk.Label(root, text="Select Crop:", font=custom_font)
@@ -82,6 +83,10 @@ harvest_date_label.pack(pady=10)
 # Create and configure the update dates button
 update_dates_button = ttk.Button(root, text="Update Dates", command=update_dates, style="Custom.TButton")
 update_dates_button.pack(pady=10)
+
+# Create a frame to contain the graph
+graph_frame = tk.Frame(root)
+graph_frame.pack(pady=10)
 
 # Run the Tkinter main loop
 root.mainloop()
