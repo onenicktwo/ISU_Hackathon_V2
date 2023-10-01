@@ -2,14 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
-import numpy as np
-from datetime import datetime, timedelta
 import main  # Import your main script as a module
 
 # Create a custom font
 custom_font = ("Times New Roman", 20)
 
-# Function to generate a graph based on the selected crop
+# Function to generate the graph based on the selected crop
 def generate_graph():
     selected_crop = crop_var.get()
 
@@ -25,7 +23,6 @@ def generate_graph():
         plt.title(f"Growing Degree Days for {selected_crop}")
         plt.grid(True)
         plt.show()
-
 
 # Function to update plant and harvest date labels
 def update_dates():
@@ -55,9 +52,6 @@ crop_data = {
     "Soybeans": {"y": [9, 14, 8, 11, 10, 0]},
 }
 
-# Define the number of years into the future to display on the graph
-years_into_future = 5
-
 # Create and configure the crop selection combobox
 crop_label = ttk.Label(root, text="Select Crop:", font=custom_font)
 crop_label.pack(pady=10)
@@ -71,7 +65,7 @@ button_style = ttk.Style()
 button_style.configure("Custom.TButton", font=custom_font)
 
 # Create and configure the submit button with the custom style
-submit_button = ttk.Button(root, text="Submit", command=generate_graph, style="Custom.TButton")
+submit_button = ttk.Button(root, text="Generate Graph", command=generate_graph, style="Custom.TButton")
 submit_button.pack(pady=10)
 
 # Create and configure the label for best day
@@ -91,4 +85,3 @@ update_dates_button.pack(pady=10)
 
 # Run the Tkinter main loop
 root.mainloop()
-
