@@ -1,38 +1,18 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-import matplotlib.pyplot as plt
-import numpy as np
 from datetime import datetime, timedelta
 import main  # Import your main script as a module
 
 # Create a custom font
 custom_font = ("Times New Roman", 20)
 
-# Function to generate a graph based on the selected crop
-def generate_graph():
-    selected_crop = crop_var.get()
-
-    if selected_crop in crop_data:
-        data = crop_data[selected_crop]
-        y = data["y"]
-
-        today = datetime.now()
-        future_year = today.year + years_into_future
-        x = list(range(today.year, future_year + 1))
-
-        plt.figure(figsize=(8, 4))
-        plt.plot(x, y)
-        plt.xlabel("Year")
-        plt.ylabel("Growing Degree Days")
-        plt.title(f"Future Growing Degree Days for {selected_crop}")
-        plt.grid(True)
-        plt.show()
 
 # Function to update plant and harvest date labels
 def update_dates():
     plant_date_label.config(text=f"Plant Date: {main.plant_date}")
     harvest_date_label.config(text=f"Harvest Date: {main.harvest_date}")
+
 
 # Create the main window
 root = tk.Tk()
@@ -45,36 +25,6 @@ bg_photo = ImageTk.PhotoImage(bg_image)
 # Create a label to display the background image
 bg_label = tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
-
-# Create a list of available crops
-crops = ["Corn", "Wheat", "Rice", "Soybeans"]
-
-# Dictionary to map crops to their data (replace with your actual data)
-crop_data = {
-    "Corn": {"y": [10, 15, 7, 12, 9, 0]},
-    "Wheat": {"y": [8, 11, 6, 9, 7, 0]},
-    "Rice": {"y": [12, 17, 10, 14, 11, 0]},
-    "Soybeans": {"y": [9, 14, 8, 11, 10, 0]},
-}
-
-# Define the number of years into the future to display on the graph
-years_into_future = 5
-
-# Create and configure the crop selection combobox
-crop_label = ttk.Label(root, text="Select Crop:", font=custom_font)
-crop_label.pack(pady=10)
-
-crop_var = tk.StringVar()
-crop_combobox = ttk.Combobox(root, textvariable=crop_var, values=crops, font=custom_font)
-crop_combobox.pack(pady=10)
-
-# Create a custom style for the buttons
-button_style = ttk.Style()
-button_style.configure("Custom.TButton", font=custom_font)
-
-# Create and configure the submit button with the custom style
-submit_button = ttk.Button(root, text="Submit", command=generate_graph, style="Custom.TButton")
-submit_button.pack(pady=10)
 
 # Create and configure the label for best day
 best_day_label = ttk.Label(root, text="Best Day of Harvest:", font=custom_font)
@@ -90,6 +40,55 @@ harvest_date_label.pack(pady=10)
 # Create and configure the update dates button
 update_dates_button = ttk.Button(root, text="Update Dates", command=update_dates, style="Custom.TButton")
 update_dates_button.pack(pady=10)
+
+# Create a canvas for plotting the GDD data
+gdd_canvas = tk.Canvas(root, width=800, height=400)
+gdd_canvas.pack(pady=10)
+
+
+# Function to generate the GDD graph
+def generate_gdd_graph():
+    # Get GDD data from main.py (replace with your actual data)
+    years = main.years  # List of years
+    gdd_data = main.gdd_data  # List of GDD values
+
+    # Create a canvas for the graph
+    gdd_canvas.delete("all")
+
+    # Calculate the canvas dimensions
+    canvas_width = 800
+    canvas_height = 400
+    padding = 20
+    x_scale = (canvas_width - 2 * padding) / len(years)
+    max_gdd = max(gdd_data)
+    y_scale = (canvas_height - 2 * padding) / max_gdd
+
+    # Draw x and y axes
+    gdd_canvas.create_line(padding, canvas_height - padding, canvas_width - padding, canvas_height - padding)
+    gdd_canvas.create_line(padding, padding, padding, canvas_height - padding)
+
+    # Draw data points and lines
+    for i in range(len(years)):
+        x = padding + i * x_scale
+        y = canvas_height - padding - gdd_data[i] * y_scale
+        gdd_canvas.create_oval(x - 5, y - 5, x + 5, y + 5, fill="blue")
+        if i < len(years) - 1:
+            x_next = padding + (i + 1) * x_scale
+            y_next = canvas_height - padding - gdd_data[i + 1] * y_scale
+            gdd_canvas.create_line(x, y, x_next, y_next, fill="blue")
+
+    # Add labels
+    for i in range(len(years)):
+        x = padding + i * x_scale
+        gdd_canvas.create_text(x, canvas_height - padding + 10, text=str(years[i]))
+
+    gdd_canvas.create_text(padding - 30, canvas_height - padding, text="GDD", anchor="w", fill="blue")
+    gdd_canvas.create_text(padding, padding - 10, text="Year", anchor="n", fill="blue")
+
+
+# Create and configure the generate GDD graph button
+generate_graph_button = ttk.Button(root, text="Generate GDD Graph", command=generate_gdd_graph, style="Custom.TButton")
+generate_graph_button.pack(pady=10)
 
 # Run the Tkinter main loop
 root.mainloop()
