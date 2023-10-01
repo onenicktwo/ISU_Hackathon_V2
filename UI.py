@@ -13,9 +13,8 @@ def generate_graph():
     selected_crop = crop_var.get()
 
     if selected_crop:
-        # Retrieve year and GDD values from your main script
-        years = main.year
-        gdd_values = main.gdd_values
+        # Call the appropriate functions or variables from main.py
+        years, gdd_values = main.get_years_and_gdd(selected_crop)
 
         # Create a new figure
         fig = plt.figure(figsize=(8, 4))
@@ -32,6 +31,7 @@ def generate_graph():
 
         # Update the canvas
         canvas.draw()
+
 
 # Function to update plant and harvest date labels
 def update_dates():
@@ -51,7 +51,7 @@ bg_label = tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
 
 # Create a list of available crops (you can modify this if needed)
-crops = ["Crop 1", "Crop 2", "Crop 3"]
+crops = ["Corn", "Wheat", "Soybean"]
 
 # Create and configure the crop selection combobox
 crop_label = ttk.Label(root, text="Select Crop:", font=custom_font)
