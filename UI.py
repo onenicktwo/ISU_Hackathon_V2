@@ -114,3 +114,4 @@ update_best_day_button.pack(pady=20)  # Add vertical space
 
 # Run the Tkinter main loop
 root.mainloop()
+
