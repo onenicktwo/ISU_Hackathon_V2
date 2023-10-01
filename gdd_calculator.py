@@ -1,5 +1,3 @@
-import UI
-# Just an outline of a GDD Calculator
 
 def get_gdd(high, low, base):
 
