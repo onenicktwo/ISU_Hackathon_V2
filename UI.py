@@ -9,7 +9,6 @@ import main  # Import your main script as a module
 # Create a custom font
 custom_font = ("Times New Roman", 20)
 
-
 # Function to generate a graph based on the selected crop
 def generate_graph():
     selected_crop = crop_var.get()
@@ -32,7 +31,6 @@ def generate_graph():
 def update_dates():
     plant_date_label.config(text=f"Plant Date: {main.plant_date}")
     harvest_date_label.config(text=f"Harvest Date: {main.harvest_date}")
-
 
 # Create the main window
 root = tk.Tk()
