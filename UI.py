@@ -14,7 +14,9 @@ def generate_graph():
 
     if selected_crop:
         # Call the appropriate functions or variables from main.py
-        years, gdd_values = main.get_years_and_gdd(selected_crop)
+        # years, gdd_values = main.get_years_and_gdd(selected_crop)
+        years = main.years_and_gdd['Date']
+        gdd_values = main.years_and_gdd['GDD']
 
         # Create a new figure
         fig = plt.figure(figsize=(8, 4))

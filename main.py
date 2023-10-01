@@ -44,10 +44,10 @@ plant_date_index, harvest_date_index = calc_optimal_gdd.find_optimum_days(gdd_va
 plant_date = forecast['ds'].iloc[plant_date_index]
 harvest_date = forecast['ds'].iloc[harvest_date_index]
 
-d = {'Date': forecast['ds'], 'GDD': gdd_values}
+years_and_gdd = {'Date': forecast['ds'], 'GDD': gdd_values}
 
-plt.plot(d['Date'],d['GDD'])
-plt.show()
+#plt.plot(d['Date'],d['GDD'])
+#plt.show()
 #print(high_temperatures)
 print(gdd_values)
 print('The best plant date is ', plant_date)
