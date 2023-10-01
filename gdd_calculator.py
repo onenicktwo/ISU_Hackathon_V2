@@ -1,6 +1,4 @@
 import UI
-import pickle
-import main
 # Just an outline of a GDD Calculator
 
 def get_gdd(high, low, base):

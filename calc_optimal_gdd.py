@@ -1,5 +1,6 @@
 import pandas as pd
 import gdd_calculator
+import pickle
 
 
 def get_optimal_gdd(input_file, base_temp):

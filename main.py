@@ -33,11 +33,18 @@ with open('tmin_model.pkl', 'rb') as f:
 future2 = l.make_future_dataframe(data, periods=365)
 forecast2 = l.predict(future)
 
-
+high_temperatures = forecast['yhat1']
+low_temperatures = forecast2['yhat1']
 
 gdd_values = [gdd_calculator.get_gdd(high, low, 50) for high, low in zip(high_temperatures, low_temperatures)]
-plant_date, harvest_date = calc_optimal_gdd.find_optimum_days(gdd_values)
+plant_date_index, harvest_date_index = calc_optimal_gdd.find_optimum_days(gdd_values)
+
+plant_date = forecast['ds'].iloc[plant_date_index]
+harvest_date = forecast['ds'].iloc[harvest_date_index]
+
 #.plot(forecast['ds'],forecast['yhat1'])
 #plt.show()
-print(forecast[["ds", "yhat1"]])
-print(forecast2[['ds', 'yhat1']])
+print('The best plant date is ', plant_date)
+print('The best harvest date is ', harvest_date)
+#print(forecast[["ds", "yhat1"]])
+#print(forecast2[['ds', 'yhat1']])
