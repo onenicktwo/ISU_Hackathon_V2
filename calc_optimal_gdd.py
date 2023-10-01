@@ -1,45 +1,30 @@
 import pandas as pd
 import gdd_calculator
-import pickle
-
-
-def get_optimal_gdd(input_file, base_temp):
-    # subject to change, just logic down
-    # read data from file
-    df = pd.read_csv(input_file)
-
-    # set the high and low temps
-    high_temp = df['High Temperature']
-    low_temp = df['Low Temperature']
-
-    # gets the optimal gdd from the file
-    gdd = [gdd_calculator.get_gdd(high, low, base_temp) for high, low in zip(high_temp, low_temp)]
-    return gdd
-
 
 def find_optimum_days(gdd_values, min_threshold=0, window_size=7):
-    # variable holders
+    # sets variables to be used
     increasing = False
     optimum_start = None
     optimum_end = None
 
-    # loops through the input
+    # loops through the list
     for i in range(len(gdd_values)-1):
         current_value = gdd_values[i]
-        next_value = gdd_values[(i+1) % len(gdd_values)]
+        next_value = gdd_values[i+1]
 
         if current_value < min_threshold:
             continue
 
+        # checks if the current_val is less than the next one and sets it to the current if it doesn't increase
         if current_value < next_value:
             if not increasing:
                 optimum_start = i
-            increasing = True
+            increasing = True # sets increase to true if hte next value is greater
         elif current_value > next_value:
             if increasing:
                 optimum_end = i
                 if (i - optimum_start + 1) >= window_size:
                     break
             increasing = False
-    # returns both the plant and harvest dates
+
     return optimum_start, optimum_end

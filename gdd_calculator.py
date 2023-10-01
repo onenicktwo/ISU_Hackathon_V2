@@ -1,11 +1,10 @@
 
-def get_gdd(high, low, base):
+def get_gdd(high_temperatures, low_temperatures, base):
+    gdd_values = []
 
-    # calculate mean temp
-    mean_temp = float(((min(high, 86.00) + min(low, 50.00)) / 2))
+    for high, low in zip(high_temperatures, low_temperatures):
+        mean_temp = float(((min(high, 86.00) + min(low, 50.00)) / 2))
+        gdd_value = max(mean_temp - base, 0)
+        gdd_values.append(gdd_value)
 
-    # calculates the gdd
-    gdd_value = max(mean_temp - base, 0)
-
-    # returns the gdd
-    return gdd_value
+    return gdd_values
