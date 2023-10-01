@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime, timedelta
+import main  # Import your main script as a module
 
 # Create a custom font
 custom_font = ("Times New Roman", 20)
@@ -42,6 +43,11 @@ def update_best_day():
 
         best_day_label.config(text=f"Best Day of Harvest for {selected_crop}: Year {future_year}, Yield {max_yield}")
 
+# Function to update plant and harvest date labels
+def update_dates():
+    plant_date_label.config(text=f"Plant Date: {main.plant_date}")
+    harvest_date_label.config(text=f"Harvest Date: {main.harvest_date}")
+
 # Create the main window
 root = tk.Tk()
 root.title("Crop Harvest Analysis")
@@ -53,10 +59,6 @@ bg_photo = ImageTk.PhotoImage(bg_image)
 # Create a label to display the background image
 bg_label = tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
-
-# Create and configure a frame for better spacing
-main_frame = ttk.Frame(root)
-main_frame.pack(padx=20, pady=20)  # Add padding around the frame
 
 # Create a list of available crops
 crops = ["Corn", "Wheat", "Rice", "Soybeans"]
@@ -73,11 +75,11 @@ crop_data = {
 years_into_future = 5
 
 # Create and configure the crop selection combobox
-crop_label = ttk.Label(main_frame, text="Select Crop:", font=custom_font)
+crop_label = ttk.Label(root, text="Select Crop:", font=custom_font)
 crop_label.pack()
 
 crop_var = tk.StringVar()
-crop_combobox = ttk.Combobox(main_frame, textvariable=crop_var, values=crops, font=custom_font)
+crop_combobox = ttk.Combobox(root, textvariable=crop_var, values=crops, font=custom_font)
 crop_combobox.pack()
 
 # Create a custom style for the buttons
@@ -85,16 +87,27 @@ button_style = ttk.Style()
 button_style.configure("Custom.TButton", font=custom_font)
 
 # Create and configure the submit button with the custom style
-submit_button = ttk.Button(main_frame, text="Submit", command=generate_graph, style="Custom.TButton")
+submit_button = ttk.Button(root, text="Submit", command=generate_graph, style="Custom.TButton")
 submit_button.pack()
 
 # Create and configure the label for best day
-best_day_label = ttk.Label(main_frame, text="Best Day of Harvest:", font=custom_font)
+best_day_label = ttk.Label(root, text="Best Day of Harvest:", font=custom_font)
 best_day_label.pack()
 
 # Create and configure the update best day button
-update_best_day_button = ttk.Button(main_frame, text="Update Best Day", command=update_best_day, style="Custom.TButton")
+update_best_day_button = ttk.Button(root, text="Update Best Day", command=update_best_day, style="Custom.TButton")
 update_best_day_button.pack()
+
+# Create labels for plant date and harvest date
+plant_date_label = ttk.Label(root, text="Plant Date:", font=custom_font)
+plant_date_label.pack()
+
+harvest_date_label = ttk.Label(root, text="Harvest Date:", font=custom_font)
+harvest_date_label.pack()
+
+# Create and configure the update dates button
+update_dates_button = ttk.Button(root, text="Update Dates", command=update_dates, style="Custom.TButton")
+update_dates_button.pack()
 
 # Run the Tkinter main loop
 root.mainloop()
