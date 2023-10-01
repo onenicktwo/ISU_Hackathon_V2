@@ -12,7 +12,7 @@ custom_font = ("Times New Roman", 20)
 def generate_graph():
     selected_crop = crop_var.get()
 
-    if selected_crop in crop_data:
+    if selected_crop:
         # Retrieve year and GDD values from your main script
         years = main.year
         gdd_values = main.gdd_values
@@ -50,8 +50,8 @@ bg_photo = ImageTk.PhotoImage(bg_image)
 bg_label = tk.Label(root, image=bg_photo)
 bg_label.place(relwidth=1, relheight=1)
 
-# Create a list of available crops
-crops = ["Corn", "Wheat", "Rice", "Soybeans"]
+# Create a list of available crops (you can modify this if needed)
+crops = ["Crop 1", "Crop 2", "Crop 3"]
 
 # Create and configure the crop selection combobox
 crop_label = ttk.Label(root, text="Select Crop:", font=custom_font)
