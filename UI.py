@@ -29,34 +29,18 @@ def generate_graph():
         plt.show()
 
 # Function to update the best day label to the future year
-# Function to calculate optimal GDD for the selected crop
-def calculate_optimal_gdd():
+def update_best_day():
     selected_crop = crop_var.get()
 
     if selected_crop in crop_data:
         data = crop_data[selected_crop]
-        high_temp = data["high_temp"]
-        low_temp = data["low_temp"]
-        base_temp = data["base_temp"]
+        max_yield = max(data["y"])
+        peak_day_index = np.argmax(data["y"])
 
-        # Calculate optimal GDD using the GDD calculator module
-        gdd_values = [gdd_calculator.get_gdd(high, low, base_temp) for high, low in zip(high_temp, low_temp)]
-        optimal_gdd = sum(gdd_values)  # You can customize how you want to calculate the optimal GDD
+        today = datetime.now()
+        future_year = today.year + peak_day_index
 
-        # Update the label to display the optimal GDD
-        optimal_gdd_label.config(text=f"Optimal GDD for {selected_crop}: {optimal_gdd:.2f}")
-
-
-# Create and configure the label for displaying optimal GDD
-optimal_gdd_label = ttk.Label(main_frame, text="", font=custom_font)
-optimal_gdd_label.pack(pady=10)  # Add vertical space
-
-# ... (Rest of your UI code) ...
-
-# Modify the "Submit" button command to call the calculate_optimal_gdd function
-submit_button = ttk.Button(main_frame, text="Calculate Optimal GDD", command=calculate_optimal_gdd,
-                           style="Custom.TButton")
-submit_button.pack(pady=20)  # Add vertical space
+        best_day_label.config(text=f"Best Day of Harvest for {selected_crop}: Year {future_year}, Yield {max_yield}")
 
 # Create the main window
 root = tk.Tk()
@@ -68,7 +52,7 @@ bg_photo = ImageTk.PhotoImage(bg_image)
 
 # Create a label to display the background image
 bg_label = tk.Label(root, image=bg_photo)
-bg_label.pack(fill="both", expand=True)  # Expand to fill the entire window
+bg_label.place(relwidth=1, relheight=1)
 
 # Create and configure a frame for better spacing
 main_frame = ttk.Frame(root)
@@ -88,30 +72,29 @@ crop_data = {
 # Define the number of years into the future to display on the graph
 years_into_future = 5
 
-# Create and configure the crop selection combobox with space gaps
+# Create and configure the crop selection combobox
 crop_label = ttk.Label(main_frame, text="Select Crop:", font=custom_font)
-crop_label.pack(pady=10)  # Add vertical space
+crop_label.pack()
 
 crop_var = tk.StringVar()
 crop_combobox = ttk.Combobox(main_frame, textvariable=crop_var, values=crops, font=custom_font)
-crop_combobox.pack(pady=10)  # Add vertical space
+crop_combobox.pack()
 
 # Create a custom style for the buttons
 button_style = ttk.Style()
 button_style.configure("Custom.TButton", font=custom_font)
 
-# Create and configure the submit button with space gaps
+# Create and configure the submit button with the custom style
 submit_button = ttk.Button(main_frame, text="Submit", command=generate_graph, style="Custom.TButton")
-submit_button.pack(pady=20)  # Add vertical space
+submit_button.pack()
 
-# Create and configure the label for best day with space gaps
+# Create and configure the label for best day
 best_day_label = ttk.Label(main_frame, text="Best Day of Harvest:", font=custom_font)
-best_day_label.pack(pady=10)  # Add vertical space
+best_day_label.pack()
 
-# Create and configure the update best day button with space gaps
+# Create and configure the update best day button
 update_best_day_button = ttk.Button(main_frame, text="Update Best Day", command=update_best_day, style="Custom.TButton")
-update_best_day_button.pack(pady=20)  # Add vertical space
+update_best_day_button.pack()
 
 # Run the Tkinter main loop
 root.mainloop()
-
