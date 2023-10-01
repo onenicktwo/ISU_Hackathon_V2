@@ -17,7 +17,7 @@ def get_optimal_gdd(input_file, base_temp):
     return gdd
 
 
-def find_optimum_days(gdd_values):
+def find_optimum_days(gdd_values, min_threshold=0, window_size=7):
     # variable holders
     increasing = False
     optimum_start = None
@@ -25,16 +25,21 @@ def find_optimum_days(gdd_values):
 
     # loops through the input
     for i in range(len(gdd_values)-1):
-        # gets the plant date
-        if gdd_values[i] < gdd_values[i+1]:
+        current_value = gdd_values[i]
+        next_value = gdd_values[(i+1) % len(gdd_values)]
+
+        if current_value < min_threshold:
+            continue
+
+        if current_value < next_value:
             if not increasing:
                 optimum_start = i
             increasing = True
-        # gets the harvest date
-        elif gdd_values[i] > gdd_values[i+1]:
+        elif current_value > next_value:
             if increasing:
                 optimum_end = i
-                break
+                if (i - optimum_start + 1) >= window_size:
+                    break
             increasing = False
     # returns both the plant and harvest dates
     return optimum_start, optimum_end
