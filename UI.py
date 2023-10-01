@@ -90,3 +90,4 @@ graph_frame.pack(pady=10)
 
 # Run the Tkinter main loop
 root.mainloop()
+
