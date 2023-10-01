@@ -29,19 +29,6 @@ def generate_graph():
         plt.grid(True)
         plt.show()
 
-# Function to update the best day label to the future year
-def update_best_day():
-    selected_crop = crop_var.get()
-
-    if selected_crop in crop_data:
-        data = crop_data[selected_crop]
-        max_yield = max(data["y"])
-        peak_day_index = np.argmax(data["y"])
-
-        today = datetime.now()
-        future_year = today.year + peak_day_index
-
-        best_day_label.config(text=f"Best Day of Harvest for {selected_crop}: Year {future_year}, Yield {max_yield}")
 
 # Function to update plant and harvest date labels
 def update_dates():
@@ -94,10 +81,6 @@ submit_button.pack()
 best_day_label = ttk.Label(root, text="Best Day of Harvest:", font=custom_font)
 best_day_label.pack()
 
-# Create and configure the update best day button
-update_best_day_button = ttk.Button(root, text="Update Best Day", command=update_best_day, style="Custom.TButton")
-update_best_day_button.pack()
-
 # Create labels for plant date and harvest date
 plant_date_label = ttk.Label(root, text="Plant Date:", font=custom_font)
 plant_date_label.pack()
@@ -106,7 +89,7 @@ harvest_date_label = ttk.Label(root, text="Harvest Date:", font=custom_font)
 harvest_date_label.pack()
 
 # Create and configure the update dates button
-update_dates_button = ttk.Button(root, text="Update Dates", command=update_dates, style="Custom.TButton")
+update_dates_button = ttk.Label(root, text="Update Dates", font=custom_font)
 update_dates_button.pack()
 
 # Run the Tkinter main loop
